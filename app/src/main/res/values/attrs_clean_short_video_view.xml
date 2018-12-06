@@ -1,8 +1,7 @@
 <resources>
     <declare-styleable name="CleanShortVideoView">
-        <attr name="exampleString" format="string" />
-        <attr name="exampleDimension" format="dimension" />
-        <attr name="exampleColor" format="color" />
-        <attr name="exampleDrawable" format="color|reference" />
+        <!-- 底部到中心的距离 -->
+        <attr name="bottom_to_center_distance" format="dimension" />
+
     </declare-styleable>
 </resources>

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">CleanShortVideo</string>
+
+    <string-array name="clean_short_video_support_app_name">
+        <item>抖音</item>
+        <item>快手</item>
+        <item>慢手</item>
+        <item>抖手</item>
+        <item>抖身</item>
+        <item>抖头</item>
+        <item>抖脚</item>
+        <item>快脚</item>
+        <item>慢脚</item>
+    </string-array>
 </resources>

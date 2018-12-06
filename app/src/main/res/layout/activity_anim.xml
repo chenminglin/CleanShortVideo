@@ -4,14 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".AnimActivity">
 
 
-
-    <com.bethena.cleanshortvideo.view.CleanShortVideoView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="#65DE69" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_gradient_0bc062_65de69">
+
+        <com.shyz.clean.view.shortvideo.CleanShortVideoView
+            android:id="@+id/clean_short_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:bottom_to_center_distance="100dp" />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_start_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="扫描" />
+
+    <Button
+        android:id="@+id/btn_clean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清理" />
+
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="停止" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="速度控制：" />
+
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="1000"
+        android:progress="100" />
+
+    <TextView
+        android:id="@+id/tv_degress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="角度：" />
+
+    <SeekBar
+        android:id="@+id/seekbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="1" />
 
 </LinearLayout>
