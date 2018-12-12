@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.bethena.cleanshortvideo.R;
+import com.bethena.cleanshortvideo.utils.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +49,23 @@ public class CleanShortVideoView extends View {
 
     private Camera mCamera;
     private Matrix mMatrix;
+    private int mMatrixY;
 
 
     Paint mRectPaint;
     final int RECT_COLOR1 = 0x00FFFFFF;
     final int RECT_COLOR2 = 0x22FFFFFF;
+    int mRectHeight;
+    Path mRectPath;
+
+    Paint mLine1Paint;
+    Paint mLine2Paint;
 
 
     int mOvalWidthRadius;
     int mOvalHeightRadius;
+    final int LINE_COLOR1 = 0x00FFFFFF;
+    final int LINE_COLOR2 = 0x66FFFFFF;
 
     Paint mOvalPaint1;
     final int OVAL_COLOR1 = 0xFF5CD783;
@@ -124,6 +133,12 @@ public class CleanShortVideoView extends View {
         init(attrs, defStyle);
     }
 
+    public void setbottomToCenterDistance(int bottomToCenterDistance) {
+        this.mBottomToCenterDistance = bottomToCenterDistance;
+        mCenterY = getHeight() - mBottomToCenterDistance;
+        postInvalidate();
+    }
+
     private void init(AttributeSet attrs, int defStyle) {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         // Load attributes
@@ -164,13 +179,28 @@ public class CleanShortVideoView extends View {
         mCenterX = w / 2;
         mCenterY = h - mBottomToCenterDistance;
 
-        LinearGradient lg = new LinearGradient(0, -mCenterY, 0, 0, RECT_COLOR1, RECT_COLOR2, Shader.TileMode.CLAMP);
+        mRectHeight = mCenterY / 3 * 2;
+
+        LinearGradient lg = new LinearGradient(0, -mRectHeight, 0, 0, RECT_COLOR1, RECT_COLOR2, Shader.TileMode.CLAMP);
         mRectPaint.setShader(lg);
 
 
         mOvalWidthRadius = w / 4;
         mOvalHeightRadius = h / 15;
-        int degress = (w / 2 - mOvalWidthRadius);
+
+        mRectPath = new Path();
+        mRectPath.moveTo(-mOvalWidthRadius, 0);
+        mRectPath.lineTo(mOvalWidthRadius, 0);
+        int increaseWidht = mOvalWidthRadius / 2;
+        mRectPath.lineTo(mOvalWidthRadius + increaseWidht, -mRectHeight);
+        mRectPath.lineTo(-mOvalWidthRadius - increaseWidht, -mRectHeight);
+        mRectPath.close();
+
+
+        LinearGradient line1Lg = new LinearGradient(mOvalWidthRadius, 0, (mOvalWidthRadius + increaseWidht / 2), -mRectHeight / 2, LINE_COLOR1, LINE_COLOR2, Shader.TileMode.MIRROR);
+        mLine1Paint.setShader(line1Lg);
+        LinearGradient line2Lg = new LinearGradient(-mOvalWidthRadius,0, -(mOvalWidthRadius + increaseWidht / 2), -mRectHeight / 2, LINE_COLOR1, LINE_COLOR2, Shader.TileMode.MIRROR);
+        mLine2Paint.setShader(line2Lg);
 
         mOvalDistance = dp2px(3.5f);
 
@@ -216,6 +246,16 @@ public class CleanShortVideoView extends View {
         mRectPaint = new Paint();
         mRectPaint.setAntiAlias(true);
         mRectPaint.setStyle(Paint.Style.FILL);
+
+        mLine1Paint = new Paint();
+        mLine1Paint.setAntiAlias(true);
+        mLine1Paint.setStyle(Paint.Style.FILL);
+        mLine1Paint.setStrokeWidth(DisplayUtils.dp2px(2f, getContext()));
+
+        mLine2Paint = new Paint();
+        mLine2Paint.setAntiAlias(true);
+        mLine2Paint.setStyle(Paint.Style.FILL);
+        mLine2Paint.setStrokeWidth(DisplayUtils.dp2px(2f, getContext()));
 
         mOvalPaint1 = new Paint();
         mOvalPaint1.setAntiAlias(true);
@@ -268,15 +308,24 @@ public class CleanShortVideoView extends View {
         }
         canvas.restore();
 
-
         canvas.save();
-        mMatrix.reset();
-        mCamera.save();
-        mCamera.rotateX(-40);
-        mCamera.getMatrix(mMatrix);
-        mCamera.restore();
-        canvas.concat(mMatrix);
-        canvas.drawRect(-mOvalWidthRadius, -mCenterY, +mOvalWidthRadius, 0, mRectPaint);
+//        mMatrix.reset();
+//        mCamera.save();
+//        mCamera.rotateX(degress);
+//
+//        mCamera.getMatrix(mMatrix);
+//        mCamera.restore();
+//
+//        mMatrix.preTranslate(0, mMatrixY);
+//        mMatrix.postTranslate(0, mMatrixY);
+//
+//        canvas.concat(mMatrix);
+
+        canvas.drawPath(mRectPath, mRectPaint);
+
+        canvas.drawLine(mOvalWidthRadius, 0, mOvalWidthRadius + mOvalWidthRadius / 2, -mRectHeight, mLine1Paint);
+        canvas.drawLine(-mOvalWidthRadius, 0, -mOvalWidthRadius - mOvalWidthRadius / 2, -mRectHeight, mLine2Paint);
+
         canvas.restore();
 
         canvas.save();
@@ -315,8 +364,30 @@ public class CleanShortVideoView extends View {
         }
     }
 
+    private long startAnimTime;
+    private boolean isRandomMaxCleanBubbleCount;
+
     void provideCleanBubbles() {
-        while (mCleanBubbles.size() < MAX_CLEAN_BUBBLE_COUNT) {
+//        int maxBubbleCount = random.nextInt(MAX_CLEAN_BUBBLE_COUNT + 1) + 1;
+//        if (isRandomMaxCleanBubbleCount) {
+//            maxBubbleCount = MAX_CLEAN_BUBBLE_COUNT;
+//        }
+//
+//        if (maxBubbleCount == MAX_CLEAN_BUBBLE_COUNT) {
+//            isRandomMaxCleanBubbleCount = true;
+//        }
+        long currentTime = System.currentTimeMillis();
+        long deltaTime = currentTime - startAnimTime;
+        int n = (int) (deltaTime / 100);
+        int maxBubbleCount;
+        if (5 - n > 0) {
+            maxBubbleCount = MAX_CLEAN_BUBBLE_COUNT / (5 - n);
+        } else {
+            maxBubbleCount = MAX_CLEAN_BUBBLE_COUNT;
+        }
+
+        Log.d(TAG, "maxBubbleCount = " + maxBubbleCount);
+        while (mCleanBubbles.size() < maxBubbleCount) {
             CleanBubble cleanBubble = new CleanBubble();
             cleanBubble.id = UUID.randomUUID().toString();
             cleanBubble.centerX = random.nextInt(mOvalWidthRadius * 2) - mOvalWidthRadius;
@@ -326,11 +397,12 @@ public class CleanShortVideoView extends View {
             cleanBubble.alpha = random.nextInt(50) + 1;
             cleanBubble.alphaSeed = random.nextInt(5) + 1;
             cleanBubble.riseDecrement = -(random.nextInt(mBubbleMaxFallDecrement) + mMinFallDecrement);
-            if (cleanBubble.centerX >= 0) {
-                cleanBubble.leaveDecrement = random.nextInt(5) + 1;
-            } else {
-                cleanBubble.leaveDecrement = random.nextInt(5) - 5;
-            }
+//            if (cleanBubble.centerX >= 0) {
+//                cleanBubble.leaveDecrement = random.nextInt(5) ;
+//            } else {
+//                cleanBubble.leaveDecrement = random.nextInt(5) - 4;
+//            }
+            cleanBubble.leaveDecrement = random.nextInt(9) - 4;
             cleanBubble.leaveSeed = random.nextInt(1) + 1;
             mCleanBubbles.add(cleanBubble);
         }
@@ -399,7 +471,21 @@ public class CleanShortVideoView extends View {
             text.closeUpDecrement = random.nextInt(5) + 5;
             mTextPaint.setTextSize(text.textSize);
             int textWidth = (int) mTextPaint.measureText(text.text);
-            text.endX = (random.nextInt(mOvalWidthRadius * 2) - mOvalWidthRadius) - textWidth;
+
+            int entX = (random.nextInt(mOvalWidthRadius * 2) - mOvalWidthRadius);
+
+            if (entX > 0) {
+                text.endX = (random.nextInt(mOvalWidthRadius * 2) - mOvalWidthRadius) - textWidth;
+            }
+
+            if (text.endX < -mOvalWidthRadius) {
+                text.endX = -mOvalWidthRadius;
+            }
+
+            if (text.endX + textWidth > mOvalWidthRadius) {
+                text.endX = mOvalWidthRadius - textWidth;
+            }
+
 
 //            if (text.endX >= mOvalWidthRadius) {
 //                Log.d(TAG, "---------------text.endX = " + text.endX);
@@ -475,6 +561,7 @@ public class CleanShortVideoView extends View {
         if (mAnimStatus == ANIM_STATUS_CLEANING) {
             return;
         }
+        startAnimTime = System.currentTimeMillis();
         mAnimStatus = ANIM_STATUS_CLEANING;
         valueAnimator = ValueAnimator.ofInt(1, mMaxProgress);
         valueAnimator.setInterpolator(new LinearInterpolator());
@@ -499,7 +586,7 @@ public class CleanShortVideoView extends View {
         }
     }
 
-    public void stopAnimForce(){
+    public void stopAnimForce() {
         if (valueAnimator != null) {
             valueAnimator.cancel();
             valueAnimator = null;
@@ -508,6 +595,9 @@ public class CleanShortVideoView extends View {
         mBubbles.clear();
         mAppNames.clear();
         mCleanBubbles.clear();
+
+        mAnimStatus = ANIM_STATUS_STOP;
+        postInvalidate();
     }
 
     public void destroy() {
@@ -525,6 +615,11 @@ public class CleanShortVideoView extends View {
 
     public void setDegress(int degress) {
         this.degress = degress;
+        postInvalidate();
+    }
+
+    public void setMatrixY(int matrixY) {
+        this.mMatrixY = matrixY;
         postInvalidate();
     }
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="clean_short_video_appname_textsize1">13sp</dimen>
-    <dimen name="clean_short_video_appname_textsize2">12sp</dimen>
-    <dimen name="clean_short_video_appname_textsize3">10sp</dimen>
+    <dimen name="clean_short_video_appname_textsize1">14sp</dimen>
+    <dimen name="clean_short_video_appname_textsize2">13sp</dimen>
+    <dimen name="clean_short_video_appname_textsize3">12sp</dimen>
 
-    <dimen name="clean_short_video_appname_max_fall_decrement">4dp</dimen>
+    <dimen name="clean_short_video_appname_max_fall_decrement">2.3dp</dimen>
     <dimen name="clean_short_video_min_fall_decrement">2dp</dimen>
 
     <dimen name="clean_short_video_bubble_radius1">3.5dp</dimen>
     <dimen name="clean_short_video_bubble_radius2">2.5dp</dimen>
     <dimen name="clean_short_video_bubble_radius3">1.5dp</dimen>
 
-    <dimen name="clean_short_video_bubble_max_fall_decrement">3dp</dimen>
+    <dimen name="clean_short_video_bubble_max_fall_decrement">2.3dp</dimen>
 
 </resources>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.shyz.clean.view.shortvideo.CleanShortVideoSlideView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -10,6 +11,7 @@
 
 
     <FrameLayout
+        android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_gradient_0bc062_65de69">
@@ -22,48 +24,115 @@
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/btn_start_scan"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="扫描" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_clean"
+        <Button
+            android:id="@+id/btn_start_scan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="扫描" />
+
+        <Button
+            android:id="@+id/btn_clean"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="清理" />
+
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="停止" />
+
+        <Button
+            android:id="@+id/btn_focus_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="强制停止" />
+
+    </LinearLayout>
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="清理" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="速度控制：" />
 
-    <Button
-        android:id="@+id/btn_stop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="停止" />
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:progress="100" />
+
+            <TextView
+                android:id="@+id/tv_degress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="角度：" />
+
+            <SeekBar
+                android:id="@+id/seekbar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="360"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/tv_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="高度：" />
+
+            <SeekBar
+                android:id="@+id/seekbar3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="1" />
+
+            <TextView
+                android:id="@+id/tv_center_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="center_distance：" />
+
+            <SeekBar
+                android:id="@+id/seekbar4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="200"
+                android:progress="1" />
+            <TextView
+                android:id="@+id/tv_matrix_y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="matrix_y：" />
+
+            <SeekBar
+                android:id="@+id/seekbar5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="1" />
+        </LinearLayout>
+    </ScrollView>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="速度控制：" />
 
-    <SeekBar
-        android:id="@+id/seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="1000"
-        android:progress="100" />
 
-    <TextView
-        android:id="@+id/tv_degress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="角度：" />
-
-    <SeekBar
-        android:id="@+id/seekbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="1" />
-
-</LinearLayout>
+</com.shyz.clean.view.shortvideo.CleanShortVideoSlideView>

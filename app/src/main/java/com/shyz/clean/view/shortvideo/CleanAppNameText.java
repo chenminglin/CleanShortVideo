@@ -43,7 +43,7 @@ public class CleanAppNameText {
     public void nextAlpha(int maxY, int maxAlpha, int minAlpha) {
         int deltaY = maxY - y;
         float p = deltaY / Float.valueOf(maxY);
-        Log.d(TAG,"p = "+p);
+//        Log.d(TAG,"p = "+p);
         int deltaAlpha = maxAlpha - minAlpha;
         alpha = (int) (maxAlpha - deltaAlpha * p);
     }
